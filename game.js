@@ -31,6 +31,9 @@ let scoreText;
 let playerDamage = 1.0;
 let gameState = 'START';
 let inventory = [];
+let timeLeft = 90;
+let timerText;
+let gameTimer;
 
 function preload() {}
 
@@ -96,6 +99,12 @@ function create() {
         fontFamily: '"Courier New", Courier, monospace'
     });
 
+    timerText = this.add.text(400, 16, 'Tempo: 01:30', {
+        fontSize: '24px',
+        fill: '#fff',
+        fontFamily: '"Courier New", Courier, monospace'
+    });
+
     // Collisions
     this.physics.add.overlap(bullets, cats, hitCat, null, this);
     this.physics.add.collider(bullets, shields, hitShield, null, this);
@@ -112,6 +121,18 @@ function update() {
         player.setVelocityX(300);
     } else {
         player.setVelocityX(0);
+    }
+
+    // Update Timer
+    if (gameState === 'PLAYING') {
+        timeLeft -= game.loop.delta / 1000;
+        if (timeLeft <= 0) {
+            timeLeft = 0;
+            showGameOver.call(this);
+        }
+        let mins = Math.floor(timeLeft / 60);
+        let secs = Math.floor(timeLeft % 60);
+        timerText.setText(`Tempo: ${mins}:${secs < 10 ? '0' : ''}${secs}`);
     }
 
     if (Phaser.Input.Keyboard.JustDown(spaceKey)) {
@@ -301,5 +322,24 @@ function showInstructions() {
         bg.destroy(); title.destroy(); storyTxt.destroy(); rulesTxt.destroy(); startBtn.destroy();
         gameState = 'PLAYING';
         this.physics.world.resume();
+    });
+}
+
+function showGameOver() {
+    gameState = 'GAMEOVER';
+    this.physics.world.pause();
+    
+    let bg = this.add.rectangle(300, 400, 450, 400, 0x000000).setStrokeStyle(4, 0xffffff);
+    let title = this.add.text(300, 300, 'FIM DE JOGO', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5);
+    let finalScoreText = this.add.text(300, 380, `Gatos resgatados: ${score}`, { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
+    
+    let replayBtn = this.add.text(300, 500, '[ REPLAY ]', { fontSize: '32px', fill: '#fff', backgroundColor: '#333', padding: 10 }).setOrigin(0.5).setInteractive();
+
+    replayBtn.on('pointerdown', () => {
+        score = 0;
+        timeLeft = 90;
+        playerDamage = 1.0;
+        inventory = [];
+        this.scene.restart();
     });
 }
