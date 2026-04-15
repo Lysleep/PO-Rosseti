@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    image-rendering: pixelated;
+    border: 4px solid #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+canvas {
+    display: block;
+}
+
+/* UI Overlay styles if needed */
+.game-ui {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    pointer-events: none;
+}
+
+.shop-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    border: 4px solid #fff;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.shop-item {
+    padding: 10px;
+    border: 2px solid #fff;
+    margin: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.shop-item:hover {
+    background: #fff;
+    color: #000;
+}
