@@ -311,7 +311,7 @@ function showInstructions() {
         "4. Loja: Abre automaticamente ao atingir 10 gatos",
         "5. Compra: Use seus gatos resgatados para comprar itens",
         "6. Retorno: Equipe o item no inventario e volte ao jogo",
-        "7. Resgate todos e melhore seu arsenal!"
+        "7. Tempo: Voce tem 01:30 para resgatar o máximo de gatos!"
     ];
 
     let rulesTxt = this.add.text(60, 280, rules.join('\n\n'), { fontSize: '16px', fill: '#fff', align: 'left' });
