@@ -29,7 +29,7 @@ let shields;
 let score = 0;
 let scoreText;
 let playerDamage = 1.0;
-let gameState = 'PLAYING';
+let gameState = 'START';
 let inventory = [];
 
 function preload() {}
@@ -99,6 +99,8 @@ function create() {
     // Collisions
     this.physics.add.overlap(bullets, cats, hitCat, null, this);
     this.physics.add.collider(bullets, shields, hitShield, null, this);
+
+    showInstructions.call(this);
 }
 
 function update() {
@@ -270,5 +272,34 @@ function openInventory() {
         gameState = 'PLAYING';
         this.physics.world.resume();
         if (cats.countActive() === 0) createCats.call(this);
+    });
+}
+function showInstructions() {
+    this.physics.world.pause();
+    
+    let bg = this.add.rectangle(300, 400, 550, 650, 0x000000).setStrokeStyle(4, 0xffffff);
+    let title = this.add.text(300, 120, 'CAT INVADERS', { fontSize: '36px', fill: '#fff', fontWeight: 'bold' }).setOrigin(0.5);
+    
+    let story = "Voce e o 'Louco dos Gatos'. Entidades ocultas estao levando\nseus gatinhos para o espaco! Use seu lancador de petiscos\npara convence-los a descer e morar com voce.";
+    let storyTxt = this.add.text(300, 200, story, { fontSize: '15px', fill: '#fff', align: 'center' }).setOrigin(0.5);
+
+    let rules = [
+        "1. Atirar: Barra de Espaco",
+        "2. Movimentacao: Teclas A / D ou Setas",
+        "3. Objetivo: Acerte os petiscos nos gatos para resgata-los",
+        "4. Loja: Abre automaticamente ao atingir 10 gatos",
+        "5. Compra: Use seus gatos resgatados para comprar itens",
+        "6. Retorno: Equipe o item no inventario e volte ao jogo",
+        "7. Resgate todos e melhore seu arsenal!"
+    ];
+
+    let rulesTxt = this.add.text(60, 280, rules.join('\n\n'), { fontSize: '16px', fill: '#fff', align: 'left' });
+
+    let startBtn = this.add.text(300, 680, '[ CLIQUE PARA INICIAR ]', { fontSize: '24px', fill: '#fff', backgroundColor: '#333', padding: 10 }).setOrigin(0.5).setInteractive();
+
+    startBtn.on('pointerdown', () => {
+        bg.destroy(); title.destroy(); storyTxt.destroy(); rulesTxt.destroy(); startBtn.destroy();
+        gameState = 'PLAYING';
+        this.physics.world.resume();
     });
 }
